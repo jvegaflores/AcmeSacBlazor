@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="VstaModelo\" />
-    <Folder Include="Repositorio\IRepositorio\" />
     <Folder Include="Servicios\Extensiones\" />
     <Folder Include="wwwroot\Js\" />
     <Folder Include="wwwroot\Images\" />
