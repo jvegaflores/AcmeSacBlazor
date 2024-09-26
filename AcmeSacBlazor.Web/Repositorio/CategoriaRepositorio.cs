@@ -8,6 +8,11 @@ namespace AcmeSacBlazor.Web.Repositorio
     {
         private readonly ApplicationDbContext _context;
 
+        public CategoriaRepositorio(ApplicationDbContext applicationDb)
+        {
+            _context = applicationDb;
+        }
+
         public Categoria Agregar(Categoria categoria)
         {
             _context.categorias.Add(categoria);
@@ -17,14 +22,14 @@ namespace AcmeSacBlazor.Web.Repositorio
 
         public IEnumerable<Categoria> GetAll()
         {
-            throw new NotImplementedException();
+           return _context.categorias.ToList();
         }
 
         public Categoria GetOne(int Id)
         {
             var BuscaCategoria = _context.categorias.FirstOrDefault(c => c.Id == Id);
 
-            if (BuscaCategoria == null)
+            if (BuscaCategoria is not null)
             {
                 return new Categoria();
             }
@@ -33,7 +38,15 @@ namespace AcmeSacBlazor.Web.Repositorio
 
         public Categoria Modificar(Categoria categoria)
         {
-            throw new NotImplementedException();
+            var ModificaCategoria = _context.categorias.FirstOrDefault(m=> m.Id == categoria.Id);
+            if(ModificaCategoria is not null)
+            {
+                ModificaCategoria.nom_categoria = categoria.nom_categoria;
+                _context.categorias.Update(ModificaCategoria);
+                _context.SaveChanges();
+                return ModificaCategoria;
+            }
+            return categoria;
         }
     }
 }

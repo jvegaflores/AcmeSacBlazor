@@ -1,6 +1,8 @@
 using AcmeSacBlazor.Web.Components;
 using AcmeSacBlazor.Web.Components.Account;
 using AcmeSacBlazor.Web.Data;
+using AcmeSacBlazor.Web.Repositorio;
+using AcmeSacBlazor.Web.Repositorio.IRepositorio;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();

@@ -1,0 +1,76 @@
+﻿@page "/categoria"
+
+@inject ICategoriaRepositorio _categoriaRepositorio
+
+@if (Procesando)
+{
+    <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
+        <img src="/Images/Loading.gif" alt="Cargando contenido ..." />
+    </div>
+}
+else
+{
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-black bg-gradient m-lg-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-white py-2"> Lista de categoria</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body py-4">
+            <div class="row pb-3">
+                <div class="col-12 text-end">
+                    <button class="btn btn-secondary" style="width:250px;">Agregar nueva categoria</button>
+                </div>
+            </div>
+
+
+            @if (categorias.Any())
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in categorias)
+                        {
+                            <tr>
+                                <td>
+                                    @item.nom_categoria
+                                </td>
+                                <td>
+                                    Botones de acciones
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+
+    </div>
+}
+
+@code {
+    private bool Procesando { get; set; } = false;
+    private IEnumerable<Categoria> categorias { get; set; } = new List<Categoria>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Procesando = true;
+        await Task.Delay(2000);
+        CargaCategoria();
+        Procesando = false;
+    }
+
+    private void CargaCategoria()
+    {
+        categorias = _categoriaRepositorio.GetAll();
+
+    }
+}
