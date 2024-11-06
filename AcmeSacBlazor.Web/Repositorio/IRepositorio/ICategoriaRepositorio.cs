@@ -4,9 +4,9 @@ namespace AcmeSacBlazor.Web.Repositorio.IRepositorio
 {
     public interface ICategoriaRepositorio
     {
-        public Categoria Agregar(Categoria categoria);
-        public Categoria Modificar(Categoria categoria);
-        public Categoria GetOne(int Id);
-        public IEnumerable<Categoria> GetAll();
+        public Task<Categoria> Agregar(Categoria categoria);
+        public Task<Categoria> Modificar(Categoria categoria);
+        public Task<Categoria> GetOneAsync(int Id);
+        public Task<IEnumerable<Categoria>> GetAllAsync();
     }
 }

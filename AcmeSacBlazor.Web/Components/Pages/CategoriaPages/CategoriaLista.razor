@@ -14,7 +14,7 @@ else
         <div class="card-header bg-black bg-gradient m-lg-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h2 class="text-white py-2"> Lista de categoria</h2>
+                    <h2 class="text-white py-2"> Lista categoria</h2>
                 </div>
             </div>
         </div>
@@ -22,7 +22,9 @@ else
         <div class="card-body py-4">
             <div class="row pb-3">
                 <div class="col-12 text-end">
-                    <button class="btn btn-secondary" style="width:250px;">Agregar nueva categoria</button>
+                    <a href="categoria/agregar" class="btn btn-secondary" style="width:250px;">
+                        <i class="bi bi-file-earmark-plus"></i>Agregar nueva categoria
+                    </a>
                 </div>
             </div>
 
@@ -44,7 +46,12 @@ else
                                     @item.nom_categoria
                                 </td>
                                 <td>
-                                    Botones de acciones
+                                    <a href="@($"categoria/modificar/{item.Id}")" class="btn btn-primary">
+                                        <i class="bi bi-pencil"></i>Modificar
+                                    </a>
+                                    <button class="btn btn-danger">
+                                        <i class="bi bi-trash"></i>Eliminar
+                                    </button>
                                 </td>
                             </tr>
                         }
@@ -57,20 +64,30 @@ else
 }
 
 @code {
-    private bool Procesando { get; set; } = false;
+    private bool Procesando { get; set; } = true;
     private IEnumerable<Categoria> categorias { get; set; } = new List<Categoria>();
 
     protected override async Task OnInitializedAsync()
     {
-        Procesando = true;
-        await Task.Delay(2000);
-        CargaCategoria();
-        Procesando = false;
+
     }
 
-    private void CargaCategoria()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        categorias = _categoriaRepositorio.GetAll();
+        if (firstRender)
+        {
+            //Procesando = true;
+            //await Task.Delay(2000);
+            await CargaCategoria();
+            Procesando = false;
+            StateHasChanged();
+        }
+        //return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task CargaCategoria()
+    {
+        categorias = await _categoriaRepositorio.GetAllAsync();
 
     }
 }

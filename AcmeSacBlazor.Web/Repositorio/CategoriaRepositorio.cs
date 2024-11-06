@@ -13,37 +13,37 @@ namespace AcmeSacBlazor.Web.Repositorio
             _context = applicationDb;
         }
 
-        public Categoria Agregar(Categoria categoria)
+        public async Task<Categoria> Agregar(Categoria categoria)
         {
-            _context.categorias.Add(categoria);
-            _context.SaveChanges();
+           await _context.categorias.AddAsync(categoria);
+           await _context.SaveChangesAsync();
             return categoria;
         }
 
-        public IEnumerable<Categoria> GetAll()
+        public async Task<IEnumerable<Categoria>> GetAllAsync()
         {
-           return _context.categorias.ToList();
+           return await _context.categorias.ToArrayAsync();
         }
 
-        public Categoria GetOne(int Id)
+        public async Task<Categoria> GetOneAsync(int Id)
         {
-            var BuscaCategoria = _context.categorias.FirstOrDefault(c => c.Id == Id);
+            var BuscaCategoria = await _context.categorias.FirstOrDefaultAsync(c => c.Id == Id);
 
-            if (BuscaCategoria is not null)
+            if (BuscaCategoria is null)
             {
                 return new Categoria();
             }
             return BuscaCategoria;
         }
 
-        public Categoria Modificar(Categoria categoria)
+        public async Task<Categoria> Modificar(Categoria categoria)
         {
-            var ModificaCategoria = _context.categorias.FirstOrDefault(m=> m.Id == categoria.Id);
+            var ModificaCategoria = await _context.categorias.FirstOrDefaultAsync(m=> m.Id == categoria.Id);
             if(ModificaCategoria is not null)
             {
                 ModificaCategoria.nom_categoria = categoria.nom_categoria;
                 _context.categorias.Update(ModificaCategoria);
-                _context.SaveChanges();
+                await  _context.SaveChangesAsync ();
                 return ModificaCategoria;
             }
             return categoria;
