@@ -13,7 +13,7 @@ namespace AcmeSacBlazor.Web.Repositorio
             _context = applicationDb;
         }
 
-        public async Task<Categoria> Agregar(Categoria categoria)
+        public async Task<Categoria> AgregarAsync(Categoria categoria)
         {
            await _context.categorias.AddAsync(categoria);
            await _context.SaveChangesAsync();
@@ -36,7 +36,7 @@ namespace AcmeSacBlazor.Web.Repositorio
             return BuscaCategoria;
         }
 
-        public async Task<Categoria> Modificar(Categoria categoria)
+        public async Task<Categoria> ModificarAsync(Categoria categoria)
         {
             var ModificaCategoria = await _context.categorias.FirstOrDefaultAsync(m=> m.Id == categoria.Id);
             if(ModificaCategoria is not null)

@@ -7,6 +7,6 @@ namespace AcmeSacBlazor.Web.Data
         public int Id { get; set; }
        
         [Required(ErrorMessage ="Por favor ingrese el nombre de Categoria")]
-        public string nom_categoria { get; set; }
+        public string? nom_categoria { get; set; }
     }
 }

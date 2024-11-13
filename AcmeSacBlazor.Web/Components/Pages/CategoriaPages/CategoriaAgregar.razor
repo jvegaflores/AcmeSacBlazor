@@ -2,7 +2,7 @@
 @page "/categoria/Modificar/{Id:int}"
 
 @inject ICategoriaRepositorio _categoriaRepositorio
-
+@inject NavigationManager _navigatorManager
 
 @if (Procesando)
 {
@@ -22,13 +22,18 @@ else
         </div>
 
         <div class="card-body py-4">
-            <div class="row pb-3">
-                <div class="col-12 text-end">
-                    <a href="categoria/agregar" class="btn btn-secondary" style="width:250px;">
-                        <i class="bi bi-file-earmark-plus"></i>Agregar nueva categoria
-                    </a>
-                </div>
-            </div>
+            <EditForm Model="categoria" FormName="frm_categoria_mnt" OnInvalidSubmit="agregarCategoria">
+                <DataAnnotationsValidator/>
+
+                    <div class="border p-3 mt-4">
+                        <div class="form-floating py-3 col-12">
+                            <InputTex @bind-value ="categoria.nom_categoria" class="form-control" id="nom_categoria" placeholder="Nombre categoria"/>
+                            <label for="nom_categroia"> Nombre de categoria</label>
+                            <ValidationMessage For="@(()=>categoria.nom_categoria)"/>
+                        </div>
+                    </div>
+            </EditForm>
+
 
         </div>
 
@@ -39,9 +44,9 @@ else
     public int Id { get; set; }
 
     [SupplyParameterFromForm]
-    public Categoria categoria { get; set; } = new Categoria();
+    private Categoria categoria { get; set; } = new Categoria();
 
-    private bool Procesando { get; set; } = false;
+    private bool Procesando { get; set; } = true;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -63,4 +68,23 @@ else
             categoria = await _categoriaRepositorio.GetOneAsync(Id);
         }
     }
+
+    private async Task agregarCategoria()
+    {
+        Procesando = true;
+        if (categoria.Id == 0)
+        {
+            //Crear
+            await _categoriaRepositorio.AgregarAsync(categoria);
+        }
+        else
+        {
+            //Modificar
+            await _categoriaRepositorio.ModificarAsync(categoria);
+
+        }
+        Procesando = false;
+        _navigatorManager.NavigateTo("categoria");
+    }
+
 }
